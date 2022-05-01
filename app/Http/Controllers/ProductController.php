@@ -76,4 +76,62 @@ class ProductController extends Controller
                 return response()->json(['message'=>$message], 202);
         }        
     }
+
+    public function updateSingleDataProducts(Request $request, $id)
+    {
+        if ($request->ismethod('patch')) {
+            $data = $request->all();
+            // return $data;
+
+            $rules = [
+                'product_name'=>'required|unique:products',
+            ];
+
+            $customMessage = [
+                'product_name.required'=>'Product is required',
+            ];
+
+            $validator = Validator::make($data, $rules, $customMessage);
+            if($validator->fails()){
+                return response()->json($validator->errors(), 422);
+            }
+             
+                $product = Product::findOrFail($id);
+                $product->product_name = $data['product_name'];
+                $product->save();
+                $message = 'Products Name successfully updated';       
+                return response()->json(['message'=>$message], 202);
+        }        
+    }
+
+    public function deleteProducts($id=null){
+        Product::findOrFail($id)->delete();
+        $message = 'Products successfully deleted';       
+        return response()->json(['message'=>$message], 200);
+    }
+
+    public function deleteProductsJson(Request $request){
+        if($request->isMethod('delete')){
+            $data = $request->all();
+            Product::where('id', $data['id'])->delete();
+            $message = 'Products successfully deleted';       
+            return response()->json(['message'=>$message], 200);
+        }
+    }
+
+    public function deleteMultipleProducts($ids) {
+        $ids = explode(',', $ids);
+        Product::whereIn('id',$ids)->delete();
+        $message = 'Multiple Products successfully deleted';       
+        return response()->json(['message'=>$message], 200);
+    }
+
+    public function deleteMultipleProductsJson(Request $request){
+        if($request->isMethod('delete')){
+            $data = $request->all();
+            Product::whereIn('id', $data['ids'])->delete();
+            $message = 'Multiple Products successfully deleted';       
+            return response()->json(['message'=>$message], 200);
+        }
+    }
 }

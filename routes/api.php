@@ -32,3 +32,18 @@ Route::post('/add-product/', [ProductController::class,'addProducts']);
 
 //update api for products
 Route::put('/update-product/{id}', [ProductController::class,'updateProducts']);
+
+//single data update api for products
+Route::patch('/update-single-product-data/{id}', [ProductController::class,'updateSingleDataProducts']);
+
+//single data delete api for products
+Route::delete('/delete-single-product/{id}', [ProductController::class,'deleteProducts']);
+
+//single data delete api for products with json
+Route::delete('/delete-single-product-json', [ProductController::class,'deleteProductsJson']);
+
+//multiple data delete api for products
+Route::delete('/delete-multiple-product/{ids}', [ProductController::class,'deleteMultipleProducts']);
+
+//single data delete api for products with json
+Route::delete('/delete-multiple-product-json', [ProductController::class,'deleteMultipleProductsJson']);
