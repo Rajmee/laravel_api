@@ -3,6 +3,8 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserApiController;
+use App\Http\Controllers\ProductController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -24,3 +26,9 @@ Route::get('/users/{id?}', [UserApiController::class,'showUser']);
 
 //post api for add users
 Route::post('/add-users/', [UserApiController::class,'addUser']);
+
+//post api for add products
+Route::post('/add-product/', [ProductController::class,'addProducts']);
+
+//update api for products
+Route::put('/update-product/{id}', [ProductController::class,'updateProducts']);
