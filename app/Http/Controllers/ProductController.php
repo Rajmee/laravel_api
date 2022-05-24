@@ -127,11 +127,22 @@ class ProductController extends Controller
     }
 
     public function deleteMultipleProductsJson(Request $request){
-        if($request->isMethod('delete')){
-            $data = $request->all();
-            Product::whereIn('id', $data['ids'])->delete();
-            $message = 'Multiple Products successfully deleted';       
-            return response()->json(['message'=>$message], 200);
-        }
-    }
+        $header = $request->header('Authorization');
+            if($header==''){
+                $message = 'Authorization is required';       
+                return response()->json(['message'=>$message], 422);
+            }else{
+                if($header=='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMDIzMDM5MTYzNCIsIm5hbWUiOiJsYXJhdmVsIHJlc3QgYXBpIiwiaWF0IjoxNTE2MjM5MDIyfQ.BRX05_XhQC8p2XKS1wEMbcie5jkK39Pt7xWj6DxLP5s'){
+                    if($request->isMethod('delete')){
+                        $data = $request->all();
+                        Product::whereIn('id', $data['ids'])->delete();
+                        $message = 'Multiple Products successfully deleted';       
+                        return response()->json(['message'=>$message], 200);
+                    }
+                    }else{
+                        $message = 'Authorization does not match';       
+                        return response()->json(['message'=>$message], 422);
+                    }
+                }
+            }
 }
